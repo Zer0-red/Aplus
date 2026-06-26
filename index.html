@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bench — CompTIA A+ Core 1 Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ THEME TOKENS ============ */
+:root{
+  --d1:#2dd4bf; --d2:#60a5fa; --d3:#fbbf24; --d4:#a78bfa; --d5:#fb7185;
+  --d1-dim:#2dd4bf30; --d2-dim:#60a5fa30; --d3-dim:#fbbf2430; --d4-dim:#a78bfa30; --d5-dim:#fb718530;
+  --led:#4ade80; --led-glow:#4ade8088;
+  --wrong:#f87171;
+  --display:'Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+html[data-theme="dark"]{
+  --bg:#0d1117; --bg2:#0a0d12; --panel:#161b22; --panel2:#1b222c;
+  --border:#2a313d; --border2:#363f4d;
+  --text:#e6edf3; --muted:#8b97a7; --faint:#5d6776;
+  --shadow:0 10px 30px -12px #00000088;
+  --grid:#ffffff06;
+}
+html[data-theme="light"]{
+  --bg:#eef1f5; --bg2:#e4e9ef; --panel:#ffffff; --panel2:#f6f8fb;
+  --border:#d6dde6; --border2:#c2ccd8;
+  --text:#16202e; --muted:#5a6675; --faint:#8b97a7;
+  --shadow:0 10px 28px -14px #1a2a4022;
+  --grid:#0a1a3008;
+  --led:#16a34a; --led-glow:#16a34a55;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--body); background:var(--bg); color:var(--text);
+  -webkit-font-smoothing:antialiased; line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px;
+  min-height:100vh;
+  transition:background-color .25s,color .25s;
+}
+/* ============ HEADER ============ */
+header{
+  position:sticky; top:0; z-index:40;
+  display:flex; align-items:center; gap:14px;
+  padding:14px clamp(16px,4vw,40px);
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.logo{
+  width:34px;height:34px;border-radius:9px;flex:none;position:relative;
+  background:linear-gradient(135deg,var(--d5),var(--d4) 45%,var(--d2));
+  display:grid;place-items:center;
+}
+.logo::after{content:"";width:11px;height:11px;border-radius:50%;background:var(--led);box-shadow:0 0 10px var(--led-glow)}
+.brand h1{font-family:var(--display);font-size:18px;font-weight:700;margin:0;letter-spacing:-.01em}
+.brand .sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:-2px}
+.spacer{flex:1}
+.hbtn{
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  background:var(--panel);border:1px solid var(--border);color:var(--text);
+  padding:8px 13px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:7px;
+  transition:border-color .15s,transform .1s;
+}
+.hbtn:hover{border-color:var(--border2)}
+.hbtn:active{transform:translateY(1px)}
+.hbtn.ghost{background:transparent}
+/* ============ LAYOUT ============ */
+main{max-width:1040px;margin:0 auto;padding:clamp(20px,4vw,40px) clamp(16px,4vw,40px) 80px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.view{animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* ============ HOME / DASHBOARD ============ */
+.hero{margin:6px 0 30px}
+.hero h2{font-family:var(--display);font-size:clamp(28px,5vw,42px);line-height:1.05;margin:8px 0 10px;letter-spacing:-.02em}
+.hero p{color:var(--muted);max-width:60ch;margin:0;font-size:15px}
+.stat-strip{
+  display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;padding:16px 18px;
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+}
+.stat{display:flex;flex-direction:column;gap:1px}
+.stat .num{font-family:var(--display);font-size:22px;font-weight:700}
+.stat .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stat .num.led{color:var(--led)}
+.section-h{display:flex;align-items:baseline;gap:12px;margin:36px 0 16px}
+.section-h h3{font-family:var(--display);font-size:18px;margin:0}
+.section-h .line{flex:1;height:1px;background:var(--border)}
+/* domain cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{
+  position:relative;background:var(--panel);border:1px solid var(--border);
+  border-radius:16px;padding:20px;cursor:pointer;overflow:hidden;
+  transition:transform .14s,border-color .14s,box-shadow .14s;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--dc);box-shadow:var(--shadow)}
+.card .bar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--dc)}
+.card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.dnum{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--dc);
+  border:1px solid var(--dc);border-radius:7px;padding:3px 8px;letter-spacing:.04em}
+.pct{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.card h4{font-family:var(--display);font-size:18px;margin:0 0 8px;letter-spacing:-.01em}
+.card .desc{font-size:13.5px;color:var(--muted);margin:0 0 16px;min-height:60px}
+.led-strip{display:flex;gap:5px;align-items:center;margin-top:2px}
+.led-dot{width:9px;height:9px;border-radius:50%;background:var(--border2)}
+.led-dot.on{background:var(--led);box-shadow:0 0 7px var(--led-glow)}
+.card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:14px;
+  font-family:var(--mono);font-size:11px;color:var(--muted)}
+/* ============ LESSON VIEW ============ */
+.back{font-family:var(--mono);font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;padding:6px 0;margin-bottom:10px}
+.back:hover{color:var(--text)}
+.lesson-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.lesson-head .dnum{font-size:15px;padding:5px 11px}
+.lesson-head h2{font-family:var(--display);font-size:clamp(22px,4vw,32px);margin:0;letter-spacing:-.02em}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}
+.toc button{font-family:var(--mono);font-size:12px;background:var(--panel);border:1px solid var(--border);
+  color:var(--muted);padding:7px 12px;border-radius:8px;cursor:pointer;transition:.14s}
+.toc button:hover{color:var(--text);border-color:var(--dc)}
+.lesson-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;
+  padding:26px clamp(20px,3vw,34px);margin-bottom:18px;scroll-margin-top:80px}
+.lesson-card > h3{font-family:var(--display);font-size:20px;margin:0 0 14px;display:flex;align-items:center;gap:11px;letter-spacing:-.01em}
+.lesson-card > h3::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--dc);box-shadow:0 0 8px var(--dc)}
+.lesson-card p{font-size:15px;margin:0 0 14px}
+.lesson-card ul,.lesson-card ol{font-size:15px;margin:0 0 14px;padding-left:22px}
+.lesson-card li{margin-bottom:7px}
+.lesson-card b{color:var(--text);font-weight:600}
+.kw{color:var(--dc);font-weight:600}
+.mono{font-family:var(--mono);font-size:.88em;background:var(--panel2);border:1px solid var(--border);
+  padding:1px 6px;border-radius:5px;white-space:nowrap}
+table.ports{width:100%;border-collapse:collapse;margin:6px 0 16px;font-size:14px}
+table.ports td{border-bottom:1px solid var(--border);padding:8px 10px;vertical-align:top}
+table.ports td:first-child{width:30%;font-family:var(--mono);color:var(--dc);font-weight:500;white-space:nowrap}
+.lesson-foot{display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+/* ============ BUTTONS ============ */
+.btn{font-family:var(--display);font-weight:600;font-size:15px;border-radius:11px;cursor:pointer;
+  padding:13px 22px;border:1px solid var(--border);background:var(--panel);color:var(--text);
+  transition:transform .1s,border-color .14s,background .14s}
+.btn:hover{border-color:var(--border2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--led);color:#06210f;border-color:transparent}
+html[data-theme="light"] .btn.primary{color:#fff}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.dc{border-color:var(--dc);color:var(--dc)}
+/* ============ QUIZ SETUP ============ */
+.setup-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;margin:16px 0 8px}
+.opt{font-family:var(--body);text-align:left;background:var(--panel);border:1px solid var(--border);
+  border-radius:12px;padding:14px 16px;cursor:pointer;transition:.14s;color:var(--text)}
+.opt:hover{border-color:var(--border2)}
+.opt.sel{border-color:var(--led);background:color-mix(in srgb,var(--led) 9%,var(--panel))}
+.opt .ot{font-family:var(--display);font-weight:600;font-size:15px;display:block}
+.opt .os{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:3px}
+.opt.sel .os{color:var(--text)}
+.lenrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
+.chip{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--border);
+  border-radius:9px;padding:9px 16px;cursor:pointer;transition:.14s;color:var(--text)}
+.chip:hover{border-color:var(--border2)}
+.chip.sel{border-color:var(--led);background:color-mix(in srgb,var(--led) 9%,var(--panel))}
+/* ============ QUIZ RUN ============ */
+.qbar{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.progress{flex:1;height:7px;background:var(--panel);border:1px solid var(--border);border-radius:99px;overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--led);box-shadow:0 0 8px var(--led-glow);transition:width .35s}
+.qcount{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.qscore{font-family:var(--mono);font-size:12px;white-space:nowrap}
+.qscore b{color:var(--led)}
+.qtag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dc);
+  border:1px solid var(--dc);border-radius:7px;padding:3px 9px;margin-bottom:14px}
+.question{font-family:var(--display);font-size:clamp(19px,3vw,24px);line-height:1.3;margin:0 0 22px;letter-spacing:-.01em}
+.answers{display:flex;flex-direction:column;gap:11px}
+.ans{display:flex;align-items:flex-start;gap:13px;text-align:left;background:var(--panel);
+  border:1px solid var(--border);border-radius:13px;padding:15px 17px;cursor:pointer;
+  font-size:15.5px;color:var(--text);transition:border-color .14s,background .14s;font-family:var(--body)}
+.ans:hover:not(:disabled){border-color:var(--border2)}
+.ans .key{font-family:var(--mono);font-weight:700;font-size:13px;width:24px;height:24px;flex:none;
+  display:grid;place-items:center;border-radius:7px;border:1px solid var(--border2);color:var(--muted)}
+.ans.correct{border-color:var(--led);background:color-mix(in srgb,var(--led) 12%,var(--panel))}
+.ans.correct .key{background:var(--led);color:#06210f;border-color:transparent}
+.ans.wrong{border-color:var(--wrong);background:color-mix(in srgb,var(--wrong) 12%,var(--panel))}
+.ans.wrong .key{background:var(--wrong);color:#2a0606;border-color:transparent}
+.ans:disabled{cursor:default}
+.explain{margin-top:18px;background:var(--panel2);border:1px solid var(--border);border-left:3px solid var(--dc);
+  border-radius:12px;padding:16px 18px;font-size:14.5px;animation:fade .3s}
+.explain .et{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dc);margin-bottom:6px}
+.qfoot{display:flex;justify-content:flex-end;margin-top:22px}
+/* ============ RESULTS ============ */
+.result-hero{text-align:center;padding:30px 0 10px}
+.ring{width:160px;height:160px;margin:0 auto 18px}
+.result-hero h2{font-family:var(--display);font-size:30px;margin:0 0 6px}
+.result-hero p{color:var(--muted);margin:0}
+.verdict{font-family:var(--mono);font-size:13px;letter-spacing:.06em;margin-top:8px;display:inline-block;
+  padding:5px 13px;border-radius:8px;border:1px solid currentColor}
+.pass{color:var(--led)} .fail{color:var(--wrong)}
+.result-actions{display:flex;gap:12px;justify-content:center;margin:26px 0;flex-wrap:wrap}
+.breakdown{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:6px 4px;margin-top:10px}
+.brow{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border)}
+.brow:last-child{border-bottom:none}
+.brow .bd{width:3px;height:26px;border-radius:2px;background:var(--dc)}
+.brow .bn{font-family:var(--mono);font-size:12px;color:var(--muted);width:30px}
+.brow .btitle{flex:1;font-size:14px}
+.brow .bsc{font-family:var(--mono);font-size:13px}
+footer{text-align:center;padding:30px 16px;color:var(--faint);font-family:var(--mono);font-size:11px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--muted);text-decoration:none}
+@media(max-width:560px){
+  .brand .sub{display:none}
+  .hbtn span.t{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand" onclick="go('home')">
+    <div class="logo"></div>
+    <div><h1>Bench</h1><div class="sub">A+ Core 1 · 220-1201</div></div>
+  </div>
+  <div class="spacer"></div>
+  <button class="hbtn ghost" id="resetBtn" title="Reset all progress">⟳ <span class="t">Reset</span></button>
+  <button class="hbtn" id="themeBtn" title="Toggle theme">🌙 <span class="t">Theme</span></button>
+</header>
+<main id="app"></main>
+<footer>
+  Study companion built from the CompTIA A+ 220-1201 objectives &amp; 115 practice questions.
+  Progress is saved on this device only. Not affiliated with CompTIA.
+</footer>
+
+<script>const DOMAINS = [
+  { n:1, title:"Mobile Devices", pct:13, color:"teal",
+    blurb:"Laptops, tablets, and phones: hardware you can replace, the cables and accessories that connect them, and getting them onto a network." },
+  { n:2, title:"Networking", pct:23, color:"blue",
+    blurb:"Ports and protocols, wireless standards, the hardware that moves packets, and how to wire up a small office or home." },
+  { n:3, title:"Hardware", pct:25, color:"amber",
+    blurb:"The biggest domain: displays, cables, RAM, storage, motherboards, CPUs, power, and printers. Know the parts and how they fit." },
+  { n:4, title:"Virtualization & Cloud", pct:11, color:"violet",
+    blurb:"Why run a machine inside a machine, the two hypervisor types, containers, and the cloud service and deployment models." },
+  { n:5, title:"Hardware & Network Troubleshooting", pct:28, color:"rose",
+    blurb:"The largest exam slice. Read the symptom, name the likely cause: dead boards, bad drives, ugly displays, flaky networks, and jammed printers." },
+];
+
+// Lessons: each domain has an array of {t: title, h: html body}
+const LESSONS = {
+1:[
+ {t:"Replaceable mobile hardware", h:`
+  <p>On laptops and phones, the components a tech is most likely to swap are the <b>battery, keyboard/keys, RAM, the HDD/SSD, and wireless cards</b>. Modern thin laptops increasingly solder RAM and storage to the board, so always confirm a part is replaceable before quoting the repair.</p>
+  <p><b>Physical privacy &amp; security</b> components include <span class="kw">biometrics</span> (fingerprint readers, facial recognition) and <span class="kw">near-field scanner</span> features. When replacing a top cover or bezel, mind the <span class="kw">Wi-Fi antenna connectors</span> (often routed through the hinges), the <span class="kw">camera/webcam</span>, and the <span class="kw">microphone</span> — easy to pinch or forget to reconnect.</p>
+  <ul><li>Swollen battery → stop, do not puncture, replace it. Never keep using it.</li><li>Always power down and remove the battery (if removable) before internal work.</li></ul>`},
+ {t:"Connectivity & accessories", h:`
+  <p><b>Connection methods</b> you must recognize:</p>
+  <table class="ports">
+   <tr><td class="mono">USB-C</td><td>reversible, carries power + data + video (DisplayPort alt mode); replacing micro/mini USB</td></tr>
+   <tr><td class="mono">Lightning</td><td>Apple's proprietary connector (older iPhones/iPads)</td></tr>
+   <tr><td class="mono">NFC</td><td>tap-to-pay and quick pairing, ~4&nbsp;cm range</td></tr>
+   <tr><td class="mono">Bluetooth</td><td>short-range wireless for peripherals and audio</td></tr>
+   <tr><td class="mono">Hotspot</td><td>share a phone's cellular data with other devices (tethering)</td></tr>
+  </table>
+  <p><b>Accessories:</b> stylus, headsets, speakers, webcam. A <span class="kw">docking station</span> turns a laptop into a desktop workstation (full-size ports, often proprietary); a <span class="kw">port replicator</span> is similar but typically simpler/USB-based. Touch input devices: trackpad, drawing pad, and track points.</p>`},
+ {t:"Network connectivity & MDM", h:`
+  <p>Toggle <b>cellular data</b> (3G/4G/5G), <b>Wi-Fi</b>, and <b>hotspot</b> independently. A device's identity on a cell network lives on a <span class="kw">SIM</span> or an embedded <span class="kw">eSIM</span>.</p>
+  <p><b>Bluetooth pairing flow:</b> enable Bluetooth → enable pairing/discoverable → find the device → enter the PIN if prompted → test connectivity. If pairing fails, that ordered sequence is your checklist.</p>
+  <p><b>Location services</b> combine GPS with cellular/Wi-Fi positioning. <b>MDM</b> (Mobile Device Management) lets an organization push configurations and enforce policy across <span class="kw">corporate</span> and <span class="kw">BYOD</span> devices, deliver corporate apps, and control sync of mail, calendar, contacts, and cloud storage. Watch for <span class="kw">data caps</span> when syncing over cellular.</p>`},
+],
+2:[
+ {t:"Ports & protocols (memorize these)", h:`
+  <p>This is pure memorization and it shows up everywhere. Learn the number, the name, and whether it rides TCP, UDP, or both.</p>
+  <table class="ports">
+   <tr><td class="mono">20/21</td><td>FTP — file transfer</td></tr>
+   <tr><td class="mono">22</td><td>SSH — secure remote shell (also SFTP/SCP)</td></tr>
+   <tr><td class="mono">23</td><td>Telnet — remote shell, <b>unencrypted</b></td></tr>
+   <tr><td class="mono">25</td><td>SMTP — sending mail</td></tr>
+   <tr><td class="mono">53</td><td>DNS — name resolution</td></tr>
+   <tr><td class="mono">67/68</td><td>DHCP — automatic IP addressing</td></tr>
+   <tr><td class="mono">80</td><td>HTTP — web, unencrypted</td></tr>
+   <tr><td class="mono">110</td><td>POP3 — retrieving mail (downloads)</td></tr>
+   <tr><td class="mono">143</td><td>IMAP — retrieving mail (syncs)</td></tr>
+   <tr><td class="mono">137-139</td><td>NetBIOS/NetBT</td></tr>
+   <tr><td class="mono">389</td><td>LDAP — directory services</td></tr>
+   <tr><td class="mono">443</td><td>HTTPS — web, encrypted (TLS)</td></tr>
+   <tr><td class="mono">445</td><td>SMB/CIFS — file sharing</td></tr>
+   <tr><td class="mono">3389</td><td>RDP — Remote Desktop</td></tr>
+  </table>
+  <p><b>TCP vs. UDP:</b> TCP is connection-oriented and reliable (handshake, acknowledgments, retransmission) — good for web, email, file transfer. UDP is connectionless and fast with no guarantee of delivery — good for streaming, VoIP, DNS lookups, and games where speed beats perfection.</p>`},
+ {t:"Wireless technologies", h:`
+  <p><b>Frequency bands:</b> <span class="kw">2.4&nbsp;GHz</span> travels farther and through walls but is slower and crowded; <span class="kw">5&nbsp;GHz</span> is faster with less range; <span class="kw">6&nbsp;GHz</span> (Wi-Fi 6E) adds clean spectrum and more channels.</p>
+  <p><b>Channels:</b> selection and width matter to avoid overlap and interference; regulations differ by country. On 2.4&nbsp;GHz, channels 1, 6, and 11 are the classic non-overlapping picks.</p>
+  <p>Know the short-range tech: <b>Bluetooth</b> (peripherals), <b>NFC</b> (tap, ~4&nbsp;cm), and <b>RFID</b> (tags read by a reader — badges, inventory). The <b>802.11</b> family (a/b/g/n/ac/ax) defines Wi-Fi speeds and bands.</p>`},
+ {t:"Networked host services", h:`
+  <p>Server roles you should be able to name on sight: <span class="kw">DNS</span> (names→IPs), <span class="kw">DHCP</span> (hands out IPs), <span class="kw">fileshare</span>, <span class="kw">print servers</span>, <span class="kw">mail servers</span>, <span class="kw">syslog</span> (central logs), <span class="kw">web servers</span>, <span class="kw">AAA</span> (authentication/authorization/accounting), <span class="kw">database servers</span>, and <span class="kw">NTP</span> (time sync).</p>
+  <p><b>Internet appliances:</b> spam gateways, UTM (all-in-one security), load balancers, and proxy servers. <b>Legacy/embedded:</b> SCADA for industrial control. And the broad world of <b>IoT</b> smart devices.</p>`},
+ {t:"Network configuration concepts", h:`
+  <p><b>DNS record types:</b> <span class="mono">A</span> (name→IPv4), <span class="mono">AAAA</span> (name→IPv6), <span class="mono">CNAME</span> (alias), <span class="mono">MX</span> (mail server), <span class="mono">TXT</span> (free text — used for email anti-spoofing: <b>SPF</b>, <b>DKIM</b>, <b>DMARC</b>).</p>
+  <p><b>DHCP terms:</b> a <span class="kw">lease</span> is how long an IP is assigned; a <span class="kw">reservation</span> ties a fixed IP to a MAC; the <span class="kw">scope</span> is the pool of addresses; <span class="kw">exclusions</span> are addresses held back from the pool.</p>
+  <p><b>VLAN</b> logically segments one physical switch into separate networks. <b>VPN</b> creates an encrypted tunnel across a public network.</p>`},
+ {t:"Networking hardware", h:`
+  <p><b>Router</b> connects networks and routes between them; <b>switch</b> connects devices within a network (managed = configurable VLANs/QoS, unmanaged = plug-and-play). <b>Access point</b> provides Wi-Fi. <b>Patch panel</b> terminates cable runs. <b>Firewall</b> filters traffic.</p>
+  <p><b>PoE</b> (Power over Ethernet) carries power and data on one cable — useful for APs and cameras; delivered by a PoE switch or an inline injector. <b>Modems</b> bridge to your ISP: cable modem, DSL, or an <span class="kw">ONT</span> for fiber. Every <b>NIC</b> has a burned-in <span class="kw">MAC address</span>.</p>`},
+ {t:"SOHO networks & addressing", h:`
+  <p><b>IPv4</b> private ranges (not routable on the internet): <span class="mono">10.0.0.0/8</span>, <span class="mono">172.16.0.0/12</span>, <span class="mono">192.168.0.0/16</span>. Everything else public is. <b>IPv6</b> uses 128-bit addresses. <b>APIPA</b> (<span class="mono">169.254.x.x</span>) is the self-assigned address a device falls back to when DHCP fails — a giant clue that the DHCP server is unreachable.</p>
+  <p>Addresses can be <b>static</b> (manually set) or <b>dynamic</b> (from DHCP). A host needs an IP, a <span class="kw">subnet mask</span> (defines the network portion), and a <span class="kw">gateway</span> (the router's address) to reach other networks.</p>`},
+ {t:"Connection types, network types & tools", h:`
+  <p><b>Internet connections:</b> satellite (high latency, wide reach), fiber (fastest), cable, DSL (over phone lines), cellular, and WISP (wireless to rural areas).</p>
+  <p><b>Network scopes:</b> PAN (personal, e.g. Bluetooth) → LAN (building) → MAN (city) → WAN (long distance). Also WLAN (wireless LAN) and SAN (storage area network).</p>
+  <p><b>Tools:</b> crimper (attach connectors), cable stripper, Wi-Fi analyzer (find channels/signal), toner probe (trace a cable), punchdown tool (seat wires in a panel/jack), cable tester (verify wiring), loopback plug (test a port), and network tap (capture traffic).</p>`},
+],
+3:[
+ {t:"Display components", h:`
+  <p><b>LCD</b> panel sub-types trade quality for cost: <span class="kw">IPS</span> (best color/viewing angles), <span class="kw">TN</span> (cheapest, fastest, poor angles), <span class="kw">VA</span> (deep contrast, middle ground). <b>OLED</b> has per-pixel lighting for true blacks; <b>Mini-LED</b> improves LCD backlighting.</p>
+  <p>A <b>touch screen/digitizer</b> turns touch into input. Older CCFL LCDs needed an <span class="kw">inverter</span> to power the backlight. Key attributes: pixel density, refresh rate, resolution, and color gamut.</p>`},
+ {t:"Cables & connectors", h:`
+  <p><b>Network copper:</b> twisted pair in categories (Cat5e/6/6a…), wired to <span class="kw">T568A/T568B</span> standards; shielded (STP) resists interference, unshielded (UTP) is common; <span class="kw">plenum-rated</span> jacket is required in air-handling spaces. <b>Coaxial</b> for cable/CATV. <b>Fiber</b> is single-mode (long distance) or multimode (shorter, cheaper).</p>
+  <table class="ports">
+   <tr><td class="mono">RJ45</td><td>Ethernet</td></tr>
+   <tr><td class="mono">RJ11</td><td>phone/DSL</td></tr>
+   <tr><td class="mono">SC / LC / ST</td><td>fiber connectors</td></tr>
+   <tr><td class="mono">F-type</td><td>coax</td></tr>
+   <tr><td class="mono">HDMI / DP / DVI / VGA</td><td>video (VGA is analog/legacy)</td></tr>
+   <tr><td class="mono">SATA / eSATA</td><td>internal / external drives</td></tr>
+   <tr><td class="mono">Molex</td><td>legacy power</td></tr>
+  </table>`},
+ {t:"RAM characteristics", h:`
+  <p><b>Form factor:</b> <span class="kw">DIMM</span> for desktops, <span class="kw">SODIMM</span> for laptops/small PCs. <b>DDR generations</b> (DDR3/DDR4/DDR5) are not backward-compatible — the notch and slot differ.</p>
+  <p><b>ECC</b> (error-correcting) RAM detects and fixes single-bit errors; used in servers, not most desktops. <b>Channel configurations</b> (single/dual/quad) increase bandwidth when sticks are installed in matched pairs in the correct slots.</p>`},
+ {t:"Storage devices", h:`
+  <p><b>HDDs</b> spin platters (measured in RPM, e.g. 5400/7200), in 2.5" (laptop) or 3.5" (desktop) sizes. <b>SSDs</b> have no moving parts and connect via <span class="kw">SATA</span>, <span class="kw">NVMe/PCIe</span> (fast, M.2 form factor), or <span class="kw">SAS</span> (enterprise). <span class="kw">mSATA</span> and <span class="kw">M.2</span> are compact form factors.</p>
+  <p><b>RAID:</b> <span class="mono">0</span> stripes for speed (no redundancy), <span class="mono">1</span> mirrors for redundancy, <span class="mono">5</span> stripes with parity (needs ≥3 disks), <span class="mono">6</span> adds double parity, <span class="mono">10</span> mirrors + stripes. Plus removable flash drives, memory cards, and optical drives.</p>`},
+ {t:"Motherboards, CPUs & add-on cards", h:`
+  <p><b>Form factors</b> by size: <span class="kw">ATX</span> &gt; <span class="kw">microATX</span> &gt; <span class="kw">ITX</span>. <b>Connectors/slots:</b> PCI, PCIe (graphics/expansion), power, SATA, headers, and M.2. CPU compatibility hinges on the <b>socket type</b> (AMD vs. Intel) — they are not interchangeable.</p>
+  <p><b>BIOS/UEFI settings:</b> boot order, USB permissions, <span class="kw">TPM</span> (hardware key storage for encryption/Secure Boot), Secure Boot, boot/BIOS passwords, fan and temperature monitoring. <b>Encryption</b> uses TPM or an <span class="kw">HSM</span>.</p>
+  <p><b>CPU architecture:</b> x86/x64 (desktops/laptops) vs. <span class="kw">ARM</span> (mobile, power-efficient). <b>Expansion cards:</b> sound, video, capture, NIC. <b>Cooling:</b> fans, heat sink, thermal paste/pads, and liquid cooling.</p>`},
+ {t:"Power supplies", h:`
+  <p>Match input voltage to the region: <span class="mono">110–120&nbsp;VAC</span> (North America) vs. <span class="mono">220–240&nbsp;VAC</span> (much of the world). The PSU outputs <span class="mono">3.3V / 5V / 12V</span> rails. The main board connector is <span class="kw">20+4 pin</span>.</p>
+  <p>Choose adequate <b>wattage</b> for the build (GPUs are the big draw). <b>Modular</b> PSUs let you attach only the cables you need; <b>redundant</b> PSUs (servers) keep running if one fails. Look for energy-efficiency ratings.</p>`},
+ {t:"Printers: deploy & maintain", h:`
+  <p><b>Setup:</b> unbox and place sensibly, install the right driver (<span class="kw">PCL</span> vs. <span class="kw">PostScript</span>), update firmware, and connect via USB, Ethernet, or wireless. Share via a printer share or a print server. Configure duplex, orientation, trays, and quality. Security: user authentication, badging, audit logs, secured prints.</p>
+  <p><b>Maintenance by type:</b></p>
+  <ul>
+   <li><b>Laser:</b> replace toner, apply maintenance kit, calibrate, clean. (Process: charge → expose → develop → transfer → fuse → clean.)</li>
+   <li><b>Inkjet:</b> clean printheads, replace cartridges, calibrate, clear jams.</li>
+   <li><b>Thermal:</b> replace special heat-sensitive paper, clean the heating element, remove debris.</li>
+   <li><b>Impact:</b> replace ribbon, printhead, and paper; uses multipart (carbon-copy) forms.</li>
+  </ul>`},
+],
+4:[
+ {t:"Virtualization concepts", h:`
+  <p><b>Why virtualize:</b> a <span class="kw">sandbox</span> to safely test, <span class="kw">test/dev</span> environments, and <span class="kw">application virtualization</span> to run legacy or cross-platform software. VMs need allotted security, network, and storage resources.</p>
+  <p><b>Hypervisor types:</b> <span class="kw">Type 1</span> runs directly on the hardware (bare-metal — fast, for servers); <span class="kw">Type 2</span> runs as an app on top of a host OS (e.g. VirtualBox on your laptop). <b>Containers</b> share the host OS kernel — lighter than full VMs. <b>VDI</b> delivers virtual desktops to users from a central server.</p>`},
+ {t:"Cloud computing concepts", h:`
+  <p><b>Deployment models:</b> <span class="kw">private</span> (one org), <span class="kw">public</span> (shared provider), <span class="kw">hybrid</span> (mix), <span class="kw">community</span> (shared by similar orgs).</p>
+  <p><b>Service models:</b> <span class="kw">IaaS</span> (you manage OS up — raw VMs/storage), <span class="kw">PaaS</span> (you manage the app, provider handles the platform), <span class="kw">SaaS</span> (fully managed software you just use, e.g. webmail).</p>
+  <p><b>Characteristics:</b> shared vs. dedicated resources, metered/pay-as-you-go billing (watch <span class="kw">ingress/egress</span> data fees), <span class="kw">elasticity</span> (scale up/down on demand), high availability, file synchronization, and multitenancy (many customers on shared infrastructure).</p>`},
+],
+5:[
+ {t:"Troubleshooting methodology", h:`
+  <p>Not directly tested, but it frames every scenario question. The steps in order:</p>
+  <ol>
+   <li>Identify the problem.</li>
+   <li>Establish a theory of probable cause (question the obvious).</li>
+   <li>Test the theory to determine cause.</li>
+   <li>Establish a plan of action and implement the solution.</li>
+   <li>Verify full functionality; apply preventive measures.</li>
+   <li>Document findings, actions, and outcomes.</li>
+  </ol>
+  <p>When stuck or out of your depth, <b>escalate</b> — it's faster for the customer and a chance to learn.</p>`},
+ {t:"Motherboard, RAM, CPU & power symptoms", h:`
+  <p>Match symptom to cause:</p>
+  <ul>
+   <li><b>POST beeps / proprietary crash screens / blank screen</b> → bad RAM, GPU, or board; check seating.</li>
+   <li><b>No power / random shutdown / burning smell</b> → power supply or overheating; <b>capacitor swelling</b> means a failing board/PSU.</li>
+   <li><b>Sluggish performance / app crashes / unusual noise</b> → overheating, failing fan, or bad RAM.</li>
+   <li><b>Inaccurate system date/time</b> → dead CMOS battery.</li>
+  </ul>`},
+ {t:"Drive & RAID symptoms", h:`
+  <ul>
+   <li><b>Grinding / clicking</b> → mechanical HDD failure; back up immediately.</li>
+   <li><b>Bootable device not found</b> → drive not detected, wrong boot order, or dead drive.</li>
+   <li><b>S.M.A.R.T. failure</b> → the drive is reporting its own impending death — replace it.</li>
+   <li><b>RAID failure / array missing / audible alarms</b> → a member disk dropped; check status LEDs and the controller.</li>
+   <li><b>Extended read/write times, low IOPS, missing drives</b> → failing drive, cabling, or controller.</li>
+  </ul>`},
+ {t:"Video, projector & display symptoms", h:`
+  <ul>
+   <li><b>No image</b> → wrong input source, loose/bad cable, or burnt-out projector bulb.</li>
+   <li><b>Fuzzy/distorted image, wrong colors</b> → cable, resolution mismatch, or failing panel.</li>
+   <li><b>Dead pixels / burn-in</b> → panel defects (burn-in from static images on OLED/plasma).</li>
+   <li><b>Flashing / dim image</b> → backlight/inverter or cable fault.</li>
+   <li><b>Projector shuts off intermittently</b> → overheating; clean filters, check airflow.</li>
+  </ul>`},
+ {t:"Mobile device symptoms", h:`
+  <ul>
+   <li><b>Swollen battery</b> → stop using it, replace; never puncture.</li>
+   <li><b>Poor/no connectivity</b> → toggle airplane mode, check antennas, re-pair.</li>
+   <li><b>Overheating / improper charging</b> → bad battery, cable, or port; <b>physically damaged ports</b> need repair.</li>
+   <li><b>Digitizer issues / cursor drift / stylus not working</b> → recalibrate touch or replace the digitizer.</li>
+   <li><b>Can't install apps, degraded performance, malware</b> → storage full, OS issues, or security compromise.</li>
+  </ul>`},
+ {t:"Network symptoms", h:`
+  <ul>
+   <li><b>Intermittent wireless / external interference</b> → change channel, reposition AP, check for 2.4&nbsp;GHz noise.</li>
+   <li><b>Slow speeds / high latency / jitter</b> → congestion, bad cabling, or duplex mismatch; jitter ruins VoIP.</li>
+   <li><b>Limited connectivity / APIPA address</b> → DHCP isn't reachable.</li>
+   <li><b>Port flapping</b> → a link going up/down repeatedly; bad cable, NIC, or port.</li>
+   <li><b>Authentication failures</b> → wrong credentials, certificate, or RADIUS issue.</li>
+  </ul>`},
+ {t:"Printer symptoms", h:`
+  <ul>
+   <li><b>Lines / streaks / speckling</b> → dirty or failing drum/printhead; clean or replace.</li>
+   <li><b>Faded prints</b> → low toner/ink or density setting.</li>
+   <li><b>Ghost / double images</b> → failing drum or fuser (laser).</li>
+   <li><b>Paper jams / not feeding / multipage misfeed</b> → rollers, wrong paper, or pickup assembly.</li>
+   <li><b>Garbled print</b> → wrong or corrupt driver.</li>
+   <li><b>Frozen/backed-up queue</b> → restart the print spooler.</li>
+  </ul>`},
+],
+};
+
+const QUESTIONS = [{"d":2,"q":"Which item is NOT likely to be found in a technician's toolkit?","o":["Thumb drive","Nut driver","Voltage tester","EMP"],"c":3,"e":"Electromagnetic pulse (EMP) is not a tool, it is a cause of problems. All of the other choices are common tools used by technicians."},{"d":2,"q":"A tech might use this tool to check power supplied by a wall socket:","o":["RFI meter","ESD meter","Voltmeter","Tweezers"],"c":2,"e":"A voltmeter can test wall power. Radio frequency interference (RFI) and electrostatic discharge (ESD) meters don't test wall power. Using tweezers to test for power can cause equipment damage, injury, or death."},{"d":5,"q":"What should a tech do when solving a problem is beyond their ability?","o":["Ask the customer for advice","Disassemble the system and rebuild it from scratch","Tell the customer that the problem can't be fixed","Escalate the issue"],"c":3,"e":"In order to solve the problem quickly, escalating the issue is often good for the customer and is an opportunity for the technician to learn. The other options are poor choices for a technician."},{"d":3,"q":"Which primary PC component is an output device?","o":["Microphone","Printer","Web camera","Keyboard"],"c":1,"e":"A printer is an output device. Microphones, keyboards, and web cameras input information to the computer, so they are input devices."},{"d":3,"q":"Which of the following is NOT a part of a PC?","o":["GPU","RAM","CPU","TPU"],"c":3,"e":"TPU is a made-up term. Graphics processing units (GPUs) send the display signal to the monitor, random access memory (RAM) sticks are where short-term memory is stored, and the central processing unit (CPU) is the \"brain\" of the computer."},{"d":3,"q":"Many cities have a makerspace where you can get hands-on with hardware at little to no cost.","o":["True","False"],"c":0,"e":"Makerspaces are facilities for making, learning, and exploring technology that use both high tech and no tech tools. Many cities have makerspaces located within colleges and public libraries."},{"d":3,"q":"When an instruction is sent to the CPU in a binary pattern, how does the CPU know what instruction the pattern means?","o":["External data bus","Register","Translator","Code book"],"c":3,"e":"The CPU has an internal code book that identifies each instruction pattern. A register is a memory location inside a CPU. The external data bus is the set of wires that carry data and instructions between the CPU and RAM. In this context, translator is a made-up term."},{"d":3,"q":"Which of the following is NOT an example of an Instruction Set Architecture (ISA)?","o":["x64","x86","x84","x86-64"],"c":2,"e":"x84 is not an ISA standard. x64, x86, and x86-64 are all ISA standards."},{"d":3,"q":"In the following example, which part of the CPU information corresponds to the generation?","o":["Intel","Core i9","12","900"],"c":2,"e":"12 corresponds to the generation. Intel is the brand, Core i9 is the tier, 900 is the model, and K is the suffix."},{"d":3,"q":"Before installing a CPU, what's the best way to protect it?","o":["ESD mat","OEM fan","Thermal paste","Orientation notch"],"c":0,"e":"An electrostatic discharge (ESD) mat protects chips and electronics from electrostatic discharges while you're installing the equipment. A fan keeps the chip cool after it has been installed. Thermal paste helps transfer heat from the CPU to the heat sink/fan after it has been installed. The orientation notch identifies which direction the CPU should face so that it seats correctly in the socket."},{"d":3,"q":"DDR4 RAM modules have how many pins?","o":["168","240","288","184"],"c":2,"e":"DDR4 RAM sticks have 288 pins. SDRAM has 168 pins, DDR has 184 pins, DDR2 and DDR3 have 240 pins."},{"d":3,"q":"Which RAM would typically be installed into a laptop computer?","o":["ECC","SPD RAM","SDRAM","SO-DIMMs"],"c":3,"e":"Laptops and other small form factor motherboards typically use SO-DIMM memory modules. ECC RAM is usually found in server-grade computers. SDRAM is an early generation of RAM technology but it is not specific to laptops. There is no such thing as SPD RAM."},{"d":3,"q":"Which types of RAM can function even if one of its memory chips fails?","o":["SO-DIMMs","ECC","Double-sided RAM","Dual-Channel RAM"],"c":1,"e":"Error correction code (ECC) RAM and parity RAM can function with a failed memory chip. SO-DIMMs are small outline (form factor) memory modules.  Dual-channel is technology that supports simultaneous access to multiple RAM modules. Double-sided RAM are RAM modules that are organized into 4 bits."},{"d":3,"q":"In what order should memory slots be filled?","o":["Whatever order the motherboard manual specifies","Closest to the CPU to farthest from the CPU","Alternate slots starting farthest from the CPU","Farthest from the CPU to closest to the CPU"],"c":0,"e":"The best practice is to follow whatever the motherboard manual specifies. Every motherboard is slightly different, so what works in one may not work in another."},{"d":3,"q":"What should a technician do to improve performance if the virtual memory file is constantly full?","o":["Increase the size of the virtual memory file","Add more RAM to the computer","Close some applications","The technician should do nothing; virtual memory works best when the file is full"],"c":1,"e":"The best answer for performance is to add RAM. It is generally recommended to let the operating system manage the size of the virtual memory file.  Closing applications is a short-term solution but eventually, the user will reopen them. Because virtual memory is slower than physical memory, using large amounts of virtual memory will slow the system down significantly."},{"d":3,"q":"You are using the CompTIA Troubleshooting Methodology to determine the cause of some faulty RAM. You theorize that one or more RAM modules might not be properly seated. You test the theory, and it seems like a probable assumption. What is your next step?","o":["Identify the problem by removing all hardware components from the motherboard","remove the RAM and replace with new modules","Verify full system functionality by rebooting the PC","Implement the solution by reseating the RAM"],"c":3,"e":"CompTIA’s Troubleshooting Methodology offers a simplified list of steps that can help you troubleshoot and resolve almost any issue that you will run in to. After establishing and testing a theory, the next step would be to establish a plan of action to resolve the problem and implement the solution. Since we surmised that our RAM sticks weren’t seated properly, the solution to the would be to reseat the RAM."},{"d":3,"q":"BIOS programs that enable hardware to function are called what?","o":["POST","Services","CMOS","Device drivers"],"c":2,"e":"Services are BIOS programs that make hardware functional. POST is a testing program in BIOS. CMOS is a type of memory chip. Device drivers make hardware function in an operating system."},{"d":3,"q":"Which is found in BIOS?","o":["CMOS battery","CPU","POST","Real-time clock"],"c":2,"e":"The Power On Self Test (POST) program is contained in the BIOS chip. The CPU is found on the motherboard, not within BIOS. The CMOS battery is not inside a chip. The real-time clock (RTC) is in the CMOS chip, not the BIOS chip."},{"d":5,"q":"What is the primary purpose of POST?","o":["It is an add-on card to test the computer","It applies power to the CPU","It enables hardware to function before the OS boots","It performs diagnostic tests before booting the operating system"],"c":3,"e":"POST is a program in the computer's BIOS chip that performs diagnostics prior to the computer booting an operating system. POST can send messages to a POST card but the card does not contain the POST program. A power supply provides power to the CPU. POST does not enable hardware, it tests hardware."},{"d":5,"q":"For which failures would you expect POST to issue beep codes?","o":["Video card","Missing keyboard","No CPU installed","No printer found"],"c":0,"e":"Beep codes are issued when error messages can't be displayed on the screen, thus a bad video card would cause beep codes. Missing keyboard, printers, and network connection failures can all be shown on a screen. The POST program will not run at all without a CPU installed (and thus would not generate a beep code)."},{"d":2,"q":"How would a technician start the system setup program?","o":["Touch the system setup button on the front panel of the computer","Press a certain key before the computer boots the operating system","Turn off the power switch and unplug the computer, then plug in the computer and press the power switch to automatically start the setup program","Enter the administrator password during bootup"],"c":1,"e":"Every computer has a certain key on the keyboard that must be pressed before the OS boots to launch the setup program. There is no automatic procedure or button to start the setup program. The administrator password is not entered until after the setup program has started."},{"d":2,"q":"To prevent random people from booting the OS, a technician should do what?","o":["Set a user password","Set an administrator password","Flash the BIOS chip","Remove the CMOS battery"],"c":0,"e":"A user password prevents the OS from booting until the password is entered. The administrator password prevents access to the setup program until the password is entered. Flashing the BIOS is for fixing bugs and adding features to the contents of the BIOS chip. Removing the CMOS battery might prevent the OS from booting, but it is not the best answer."},{"d":5,"q":"Which is more likely to cause a computer's reported time to fall behind?","o":["Earth is spinning more slowly","The computer was not programmed to recognize leap year","The CMOS battery is weak or failing","The wall voltage is too low"],"c":2,"e":"A weak or failed CMOS battery will slow the system clock and may cause other problems. Missing a leap year won't affect the computer's clock rate. Low wall voltage is adjusted in the power supply; if it is too low, the computer won't boot."},{"d":5,"q":"Which battery provides power to the RTC and CMOS chip?","o":["CR3022","CR2032","AA Battery","9 Volt Battery"],"c":1,"e":"CR2032 is the standard CMOS battery. The other choices are not normally used for CMOS in a computer."},{"d":3,"q":"The largest motherboard form factor is?","o":["ATX","Micro-ATX","ITX","Mini-ITX"],"c":0,"e":"In order of largest to smallest, the form factors are ATX, Micro-ATX, ITX, and Mini-ITX."},{"d":3,"q":"Which is true of an I/O shield?","o":["The I/O shield must be customized to fit the case","The I/O shield is customized to fit the motherboard I/O area","The dimensions of the I/O shield for a Micro-ATX motherboard are 9.6 inches by 9.6 inches","All I/O shields are standardized to fit all motherboard I/O areas"],"c":1,"e":"I/O shields are customized to fit the motherboard I/O area.  I/O shields have standard dimensions to fit standard form factor cases.  Micro-ATX motherboards are 9.6 x 9.6, not their I/O shields. Different motherboards have different I/O ports so it is impossible to create a one-size-fits-all I/O shield for different motherboards."},{"d":3,"q":"Which chip is typically found on modern motherboards?","o":["CMOS battery","Second bridge","Northbridge","Southbridge"],"c":3,"e":"The southbridge is typically found on modern motherboards. The functions of the old northbridge chip have been moved onto modern CPUs. The CMOS battery is mounted on the motherboard, but it is not a chip, it is a battery. Second bridge is a made-up term."},{"d":3,"q":"The job of the southbridge is to act as the interface between the CPU and what?","o":["Slow hardware","Fast hardware","RAM","Video card"],"c":0,"e":"The southbridge interfaces slow hardware such as hard drives and keyboards to the CPU. The CPU interacts directly with fast hardware including RAM and video cards."},{"d":3,"q":"Which is typically not found on a motherboard?","o":["PCIe slots","SATA cables","Voltage regulators","Power connectors"],"c":1,"e":"SATA cables attach to connectors on the motherboard, but they are not part of the motherboard. PCIe slots, voltage regulators, and power connectors are all found on motherboards."},{"d":3,"q":"The small, metal items that screw into a case and keep the motherboard from touching the case are called:","o":["Dongles","Standoffs","Slots","I/O shields"],"c":1,"e":"Standoffs are the screws used to keep the motherboard from touching the case so that there isn't an electric short, which could damage the components. Slots are for plugging in RAM and expansion cards. I/O shields protect the motherboard from dust and debris."},{"d":3,"q":"How can you protect your system from ESD while installing the motherboard?","o":["I/O shields","Antistatic wrist strap","Drinking hot coffee over your system","Use fans to blow cool air throughout the room"],"c":1,"e":"Antistatic (or ESD) wrist straps protect from ESD by dispersing the electricy generated by your body so it doesn't get dispersed into the components instead. I/O shields protect the motherboard from dust and debris. Drinking hot coffee over a system you're building is NEVER a good idea, as liquids can ruin electronic equipment. Using fans to blow cool air throughout the room isn't necessary at this point of your PC build, since none of the heat-producing componenets are installed and turned on yet."},{"d":3,"q":"Which must be done before installing a motherboard into a case?","o":["Install case fans","Install the I/O shield","Install the SATA cables","Install a video card into a PCIe slot"],"c":1,"e":"The I/O shield must be installed before the motherboard is installed; it won't fit after the board is in place. Case fans and SATA cables can be installed at any time. Installing a video card into the motherboard may make it challenging or impossible to install the motherboard into the case."},{"d":3,"q":"A power supply with optional cable plug-ins is known as a what?","o":["Soldered power supply","Option power supply","Flex power supply","Modular power supply"],"c":3,"e":"A modular power supply simplifies cable management by enabling you to add and remove optional plug-in cables as needed to power components. Option power supply is a made-up term. A Flex power supply is a small-form-factor power supply. A soldered power supply has all of its power cables soldered to the power supply unit (PSU)."},{"d":3,"q":"What does the on/off switch on a power supply do?","o":["Provides wall power to the power supply","Turns on the computer","Applies power to the \"power good\" wire","Nothing; power supplies autodetect power and turn on or off accordingly"],"c":0,"e":"It allows power to flow from the plug into the power supply. The computer has its own on/off switch. The power supply powers the \"power good\" wire (if the power is good) but the power supply switch does not do this directly. Power supplies (mostly) do not autodetect power and then react."},{"d":3,"q":"Which is a primary characteristic to be considered when choosing a power supply?","o":["Cable lengths","Efficiency","UPS compatibility","Power sag rating"],"c":1,"e":"Efficiency is a major consideration. Cable length is important, but most power cables are of sufficient length and don't typically need to be measured or checked. Power supplies do not have a sag rating. UPS compatibility is not a real specification."},{"d":3,"q":"Normal vacuums are dangerous to use inside of a PC due to their ability to:","o":["Generate loud noises which interferes with productivity","Build up static electricity","Scrub off thermal paste with the brush nozzle","Accidentally suck up capacitors and other components"],"c":1,"e":"Vacuums generate a lot of static electricity, specifically on the plastic areas of the device, including the nozzle. While niche anti-static PC vacuums exist, it is always best to use canned air to blow dust out of your PC."},{"d":3,"q":"A client’s PC will no longer boot up. You suspect the PSU is the cause. Which of these actions would be appropriate to take to resolve the issue?","o":["Practice proper power handling and then double check all connectors and cables","Verify functionality with a power supply tester","Swap the PSU for a known working one","All of the above"],"c":3,"e":"We always want to practice proper power handling, especially when dealing with the source of the power, our PSU. Power supply testers can be used to test a PSU and verify that it is functioning as intended. Many technicians keep spares of common components such as PSUs, so that they can swap a known working one into the system and test their theory of probable causation."},{"d":3,"q":"Mass storage is organized into __________?","o":["Gibibytes","LBAs","Pages","Gigabytes"],"c":1,"e":"Storage is organized into Logical Blocks (LBAs). Gigabytes and Gibibytes describe capacity, not organizational structure. Pages are the organizational structure of SSDs but not of all mass storage devices."},{"d":3,"q":"Which does NOT describe a mass storage device?","o":["Optical drive","M.1 drive","Magnetic disk","SSD"],"c":1,"e":"An M.1 drive is not a mass storage device; it is a made-up term that closely resembles the M.2 form factor. Optical drives, magnetic drives, and SSDs are all mass storage."},{"d":3,"q":"Which is a standard command and connection standard for mass storage devices?","o":["ATA","LBA","2.5\" form factor","3.5\" form factor"],"c":0,"e":"Advanced Technology Attachment (ATA) is a command and connection standard for mass storage devices. Form factors are not command or connection standards. LBA is an organization structure for mass storage devices."},{"d":3,"q":"SATA drives use how many wires to transfer data to and from the computer?","o":["8","4","2","1"],"c":3,"e":"SATA is a serial interface; all data moves in sequence (serial) over a single wire. SATA does not use 2, 4, or 8 wires to transfer data."},{"d":3,"q":"SSDs are organized into logical blocks, but their memory storage cells are called what?","o":["Sectors","Slots","Pages","Sockets"],"c":2,"e":"SSD memory cells are called pages. Magnetic drive storage units are called sectors. Slots and sockets are not terms to describe storage units."},{"d":3,"q":"Which interface is the fastest?","o":["SATA","SCSI","NVMe","PATA"],"c":2,"e":"NVMe uses PCIe lanes and is the fastest of these interface choices. PATA is the slowest; SATA and SCSI speeds fall between NVMe and PATA."},{"d":3,"q":"Combine SCSI with SATA to get ____________?","o":["SSCSI","SAS","M.2","SASI"],"c":1,"e":"Serial Attached SCSI (SAS) uses the SATA connector with the SCSI command language. M.2 is a connector interface and form factor. SSCSI and SASI are made up terms."},{"d":3,"q":"Running SCSI commands over Ethernet is called __________?","o":["iSCSI","SCSIi","eSCSI","SCSIe"],"c":0,"e":"iSCSI uses SCSI commands sent over Ethernet. SCSIi, eSCSI, and SCSIe are made up terms."},{"d":3,"q":"What is the minimum number of drives to perform RAID 5?","o":["2","3","4","5"],"c":1,"e":"It takes a minimum of three drives to create a RAID 5 array."},{"d":3,"q":"What is the maximum number of drive failures under RAID 6 at which the array will still function?","o":["0","1","2","3"],"c":2,"e":"A RAID 6 array will function with up to two drive failures."},{"d":3,"q":"Which is an example of a hardware RAID controller?","o":["Storage Spaces","Dedicated expansion card","Dynamic disks","Basic disks"],"c":1,"e":"A dedicated RAID controller comes in the form of an expansion card. Storage Spaces is a Microsoft software RAID implementation. Dynamic and basic disks are not RAID controllers."},{"d":3,"q":"RAID 10 requires how many drives?","o":["4","3","2","8"],"c":0,"e":"RAID 10 requires 4 drives."},{"d":3,"q":"Which is NOT a Storage Solution RAID configuration?","o":["Parity","Simple","Two-way mirror","RAID 10"],"c":3,"e":"Storage Spaces does not have a RAID 10 configuration. Simple (JBOD), two-way mirror, and parity (RAID 5) are all supported configurations under Storage Spaces."},{"d":3,"q":"What operates a software RAID solution?","o":["A RAID expansion card","A RAID controller built into the motherboard","The OS and CPU","The drives in the array"],"c":2,"e":"Software RAID is controlled by the operating system and the CPU. RAID expansion cards and motherboard-based RAID controllers are examples of hardware RAID. Drives don't have built-in RAID controllers."},{"d":3,"q":"What kind of chip holds a BitLocker key?","o":["TPM","MPT","TMP","PTM"],"c":0,"e":"A Trusted Platform Module (TPM) chip holds a BitLocker key. The rest are made-up terms."},{"d":5,"q":"Which is most likely the result of a corrupted operating system?","o":["The system attempts to boot from the wrong device","Slow performance","The hard drive makes a loud clicking noise","Continuous rebooting"],"c":3,"e":"Of the choices here, the most likely result of a corrupt operating system is continuous reboots. Boot order is set in the UEFI/BIOS system setup utility. A corrupt OS can cause crashes and reboots, not slow performance. Hard drive clicking comes from a mechanical failure inside the hard drive."},{"d":1,"q":"Which is not a valid USB speed?","o":["12 Mbps","480 Mbps","5 Gbps","1.1 Gbps"],"c":3,"e":"1.1 Gbps is not a valid USB speed. USB 1.1 Full Speed runs at 12 Mbps. USB 2.0 Hi Speed runs at 480 Mbps. USB 3 and 3.1 Gen 1 run at 5 Gbps (SuperSpeed)."},{"d":1,"q":"Each version of USB in a computer has its own what?","o":["USB hub","USB controller","USB peripheral","USB Type-B connector"],"c":1,"e":"Each version of USB in a computer has its own USB controller which is then connected to a USB hub. USB Type-B connectors connect to a downstream peripheral (such as a printer). A USB hub is a circuit or device with one or more upstream USB ports. Each version of USB does not have its own peripheral."},{"d":1,"q":"Most USB peripherals already have a what?","o":["Windows driver","USB lock","HID interface","Lightning connector"],"c":0,"e":"Windows comes with drivers for many common USB devices. A USB lock is an unpowered physical plug that secures open USB ports on a computer, not part of a USB peripheral. There is no such thing as an HID interface. USB devices come with USB connectors, not Lightning connectors."},{"d":3,"q":"Which is not a valid Thunderbolt speed?","o":["10 Gbps","20 Gbps","30 Gbps","40 Gbps"],"c":2,"e":"30 Gbps is not a valid Thunderbolt speed. Thunderbolt 1 runs at 10 Gbps, Thunderbolt 2 runs at 20 Gbps, and Thunderbolt 3 runs at 40 Gbps."},{"d":3,"q":"Which is a valid Compact Disc capacity?","o":["74 megabytes","74 minutes","80 megabytes","4.37 gigabytes"],"c":1,"e":"74 minutes is a valid CD capacity. The other values are not valid for CDs."},{"d":3,"q":"The term peripheral refers to both ______ and _______ devices.","o":["digital, analog","input, output","real, virtual","serial, DHCP"],"c":1,"e":"Peripheral is a term used to describe any and all input and output devices that can be connected to a computer. Things like monitors and printers are peripherals that output data, while keyboards and webcams are peripherals that input data."},{"d":3,"q":"Videoconferencing software allows viewing of remote desktops through a feature known as _____________.","o":["pixelated productivity","remote ready","world workgroup","screen sharing"],"c":3,"e":"Screen sharing is a fantastic feature included in most video conferencing tools that allows us to view and sometimes interact with another user’s desktop. It is highly useful when someone needs to display and collaborate information with many users at once. The other terms are made up."},{"d":3,"q":"Modern GPUs are installed in a _____ slot, which enables high speed communication between the GPU, the CPU, and RAM.","o":["PSU","PCIe","PCI","AGP"],"c":1,"e":"The Peripheral Component Interconnect Express (PCIe) slot enables high speed communication between GPUs, the CPU, and RAM. PCIe slots come in multiple size formats, known as lanes, and are denoted as x1, x4, x8, and x16 accordingly. A power supply unit (PSU) supplies power to the system. PCI is an older standard. AGP is a made-up term."},{"d":3,"q":"Which is a monitor backlight technology?","o":["LCD","LED","OLED","Nit"],"c":1,"e":"LEDs are a monitor backlight technology. LCDs don't make their own light (thus the need for a backlight). OLEDs make their own light (they don't need a backlight). Nit is a unit used to measure monitor brightness."},{"d":3,"q":"Which display technology uses moving mirrors?","o":["CCFL","RGB","DLP","LCD"],"c":2,"e":"DLP uses tiny, moving mirrors to create the projected image. CCFL is a back lighting technology. Red, green, and blue (RGB) are the subpixel colors. A liquid crystal display (LCD) contains liquid crystal that changes opacity."},{"d":3,"q":"A CPU with a built-in graphics processor is a what?","o":["DVI","APU","VGA","GPU"],"c":1,"e":"An APU includes a CPU and GPU on the same chip. VGA and DVI are video connectors. A graphics processing unit (GPU) can refer to either the core graphics processor or a standalone video card."},{"d":3,"q":"Which is not a task performed in Windows when installing a video card?","o":["Adjust PCIe power","Adjust font size","Update drivers","Set resolution to native"],"c":0,"e":"PCIe power is not adjustable. All of the other tasks are performed in Windows as part of a video card installation."},{"d":5,"q":"Which is not a standard projector adjustment?","o":["Keystone","Pincushion","Skew","Threading"],"c":3,"e":"Threading is not a projector adjustment. Keystone, skew and pincushion are all standard projector adjustments."},{"d":2,"q":"What goes at the end of an Ethernet frame?","o":["FCS","Destination MAC","Source MAC","Data"],"c":0,"e":"The frame check sequence (FCS) goes at the end of an Ethernet frame. In order, an Ethernet frame includes the destination MAC addresses, the source MAC address, the data payload, and finally the FCS."},{"d":2,"q":"MAC addresses are made up of how many bits?","o":["24","48","64","128"],"c":1,"e":"MAC addresses are made up of 48 bits. The other answers are incorrect."},{"d":2,"q":"Which device retransmits any inbound message out all of its other ports?","o":["Switch","Router","Hub","Smart Repeater"],"c":2,"e":"A hub repeats inbound traffic out all of its other ports. Switches only retransmit data out the port that the intended receiver is connected to. Routers forward traffic to remote networks as required. Smart repeater is an unofficial term for a switch."},{"d":2,"q":"How does a switch know the MAC addresses of connected devices?","o":["Switches don't know MAC addresses","Switches query each connected host","An administrator must program the MAC-to-port table","The switch learns the addresses by watching frames"],"c":3,"e":"Switches watch all inbound frames and learn MAC addresses from them. Switches definitely need to know MAC addresses, which they learn automatically without needing to query hosts or be manually programmed."},{"d":2,"q":"How are WANs identified?","o":["Logical addresses","Physical addresses","MAC addresses","Ethernet address"],"c":0,"e":"Networks are identified by logical addresses (IP addresses). Physical, MAC, and Ethernet addresses are all different names for the same thing."},{"d":2,"q":"Which device forwards data from one network to another?","o":["Hub","Switch","e-mail","Router"],"c":3,"e":"A router forwards network traffic from one network to another. Switches and hubs transmit traffic within a LAN. e-mail may send data from one network to another but it is an application/protocol, not a device."},{"d":2,"q":"Which is not a network cable type?","o":["Coaxial","Plenum","UTP","STP"],"c":1,"e":"Plenum describes any type of cable with a fire-resistant jacket. Coax, unshielded twisted pair (UTP) and shielded twisted pair (STP) are all types of network cable."},{"d":2,"q":"Multimode fiber optic cables use what for their light source?","o":["Lasers","Infrared light","LEDs","Halogen bulbs"],"c":2,"e":"Multimode fiber cables use LEDs to generate light pulses. The other answers are incorrect."},{"d":2,"q":"How many pairs of wires are in UTP Ethernet cables?","o":["2","3","4","8"],"c":2,"e":"UTP Ethernet cables have four pairs of wires. The other choices are incorrect."},{"d":2,"q":"Which is the best tool to identify a specific cable within a bundle of cables?","o":["Fox and Hound","TDR","Continuity tester","Punch down tool"],"c":0,"e":"A tone probe and tone generator, also called a Fox and Hound, can easily identify a specific cable within a bundle. Neither a TDR nor a continuity tester can identify a specific cable in a bundle. A punch down tool is not a diagnostic tool."},{"d":2,"q":"Solid-core cabling is best used where?","o":["To connect a switch to a patch bay in a patch panel","To connect a computer to a wall jack","To connect distant locations with horizontal runs and drops inside walls and plenum spaces","To connect rarely-moved office equipment such as printers and copiers"],"c":2,"e":"Solid-core cable is used in walls and horizontal runs because it is good for long runs and is not exposed to frequent bending. It is not used in environments where frequent bending occurs such as in patch panels, workspaces, or anywhere that it will be flexed regularly by people handling, stepping on, or tripping over it."},{"d":2,"q":"Which do link lights not normally indicate?","o":["Connection/link","Duplex status","Speed","Activity"],"c":1,"e":"Link lights do not normally indicate duplex status. They do show link/connection status, indicate connection speed, and show activity."},{"d":2,"q":"Wake-on-LAN is triggered by what?","o":["Magic bullet","Magic frame","Magic message","Magic packet"],"c":3,"e":"When supported, a magic packet triggers Wake-on-LAN. The other choices are incorrect."},{"d":2,"q":"A Class A IP address has how many locked octets?","o":["One","Two","Three","Four"],"c":0,"e":"The first octet of a Class A address, the network address, is locked. The other choices are incorrect."},{"d":2,"q":"How many bits are in an IPv6 address?","o":["32","64","128","256"],"c":2,"e":"IPv6 addresses are 128 bits long. IPv4 address are 32 bits long. No IP address versions are 64 or 256 bits long."},{"d":2,"q":"Which service uses port 445?","o":["HTTPS","SMB","IMAP","SLP"],"c":1,"e":"SMB uses port 445. HTTPS uses port 443. IMAP uses port 143. SLP uses port 427."},{"d":2,"q":"What is the maximum number of characters in an FQDN?","o":["128 (including dots)","128 (not including dots)","255 (including dots)","255 (not including dots)"],"c":2,"e":"Fully-qualified domain names (FQDNs) can have up to 255 characters, including dots. The other choices are not correct."},{"d":2,"q":"Which is not a Wi-Fi capable device?","o":["WAP","Switch","Smartphone","Tablet"],"c":1,"e":"A switch is a hard-wired network device. WAPs, smartphones, and tablets are all Wi-Fi capable."},{"d":2,"q":"Which 802.11 standard runs on 5GHz?","o":["802.11a","802.11b","802.11g","802.11c"],"c":0,"e":"802.11a runs on 5GHz. 802.11b and 802.11g run on 2.4GHz. 802.11c is not a Wi-Fi standard."},{"d":2,"q":"Which is not true of wireless mesh networks?","o":["Mesh networks have a single base station","Mesh networks are best for large enterprise networks","Mesh networks have one or more beacon/satellite stations","Mesh networks provide wide coverage in homes and small offices"],"c":1,"e":"Mesh networks don't provide the customized configuration required for enterprise-sized networks. All of the other statements are true of wireless mesh networks."},{"d":3,"q":"If you spot a WAP on the ceiling of a large room with no obvious power outlet nearby, how is it most-likely powered?","o":["PoE","RADIUS","Battery","Solar"],"c":0,"e":"Power over Ethernet is a common way to provide power to a WAP. RADIUS is an authentication protocol. Battery and solar power have limited use for powering a WAP mounted in a hard-to-reach location indoors."},{"d":1,"q":"Which is not a wireless radio technology found in computers, tablets, or phones?","o":["Infrared","Bluetooth","RFID","NFC"],"c":0,"e":"Infrared is a rarely-used wireless technology that communicates with infrared light, not radio waves. Bluetooth, RFID and NFC are all wireless radio technologies."},{"d":2,"q":"Which is most-likely to prevent a device from connecting to a previously-used Wi-Fi network?","o":["The antenna(s) are poorly oriented","The SSID has changed","Too many devices are accessing the WAP","The WAP is disconnected from the Internet"],"c":1,"e":"The most-likely answer is that the SSID changed. Poor antenna orientation may reduce speed or range. Too many devices using the WAP are likely to cause low or intermittent connectivity. Even if a WAP is disconnected from the Internet, devices can still connect to it."},{"d":2,"q":"Which firewall exception must be enabled on a client to connect to a webserver?","o":["Port 143 (inbound)","Port 143 (outbound)","Port 80 (inbound)","Port 80 (outbound)"],"c":3,"e":"The client (the system running the browser) must allow outbound traffic on port 80. Inbound port 80 traffic should be blocked on the web client. Port 143 is used for IMAP; it has nothing to do with web servers or clients."},{"d":2,"q":"Which is not an e-mail protocol port?","o":["25","110","143","443"],"c":3,"e":"Port 443 is for HTTPS, which is not an e-mail protocol. Port 25 is for the Simple Mail Transfer Protocol (SMTP), port 110 is for the Post Office Protocol (POP/POP3) ,and port 143 is for the Internet Message Access Protocol (IMAP)."},{"d":2,"q":"Which is not a wireless technology used in IoT?","o":["Ethernet","802.11","Zigbee","Z-wave"],"c":0,"e":"Ethernet is not wireless (and most IoT devices don't have an Ethernet port). 802.11/Wi-Fi, Zigbee, and Z-wave are all common wireless IoT connection schemes."},{"d":3,"q":"A virtual machine is a _______ OS running within a ________ OS.","o":["hypervisor, host","guest, hypervisor","guest, host","host, guest"],"c":2,"e":"A VM is a guest operating system that runs within a host operating system. The hypervisor manages the guest OS and the interface between the guest OS and the shared physical hardware of the host OS."},{"d":4,"q":"Which is not needed to install a virtual machine?","o":["Hypervisor","Guest OS .iso file","Virtual disk","Optical drive"],"c":3,"e":"A physical optical drive isn't necessary; the hypervisor can create a virtual optical drive from the guest OS .iso file. The installation needs a hypervisor, a guest OS .iso file and a virtual disk."},{"d":4,"q":"Which is not a good uses of a virtual machine?","o":["Practice administering different operating systems","Experiment with multiple drives without purchasing hardware","Configure virtual networking","Install 3D games"],"c":3,"e":"While many VMs support 3D technology, resource sharing with the host OS and other VMs limits a guest's 3D performance. VMs are a great way to practice administering different operating systems, configure and experiment with virtual networking, and experiment with multiple drives by using virtual disks instead of purchasing more physical hard drives."},{"d":4,"q":"Which is not a cloud ownership category?","o":["Corporate","Private","Public","Hybrid"],"c":0,"e":"There is no cloud ownership category known as a corporate cloud. While most of the physical equipment that makes up the cloud is owned by corporations, cloud ownership models focus on who is able to use services provided by a given cloud. Public, private and hybrid are each cloud ownership models."},{"d":1,"q":"Which is a good technique to use when working inside a laptop?","o":["Store all removed screws and hardware in a bowl to avoid losing them","Keep the battery attached so you can test as you go","Review a disassembly guide or manual","Use a butter knife to separate case halves because it is dull but strong"],"c":2,"e":"Review the disassembly process. Keeping all hardware and components in a single container can make small parts tough to find and identify when reassembling the computer. The battery should be removed or disconnected to avoid short circuits while working inside the computer. Avoid using tools that are not specifically designed to perform disassembly tasks."},{"d":1,"q":"Which technique is most helpful when reassembling a laptop?","o":["Consult pictures taken when disassembling the laptop","Use larger replacement screws than the ones removed","Upgrade all upgradeable components during reassembly","Have a second laptop of the same model to review during reassembly"],"c":0,"e":"Pictures are the easiest and most practical tool to help with reassembly. Use the original hardware to reassemble a laptop. Upgrading during reassembly is a good idea but it won't help the reassembly process. It is likely impractical to have an identical laptop to reference during reassembly."},{"d":1,"q":"Which component usually takes the most disassembly to replace in a laptop?","o":["RAM","Battery","Hard drive","CPU"],"c":3,"e":"The CPU is usually buried deep inside a laptop. RAM, batteries, and hard drives are usually easily accessible."},{"d":1,"q":"Laptop monitors can be challenging to work on for what reason?","o":["They use high power","They are sealed","They have built-in batteries","They use chemical backlighting"],"c":1,"e":"Laptop displays tend to be sealed. Laptop displays do not have built-in batteries. Laptop displays use the same backlighting technology as desktop displays: LEDs and CCFLs. Laptop displays generally use less power than desktop displays of the same size."},{"d":1,"q":"Which is not true of a mobile device?","o":["It is a single, sealed unit","It runs a mobile operating system","It supports wireless connectivity","It can be easily serviced and upgraded"],"c":3,"e":"Being sealed, mobile devices are not easily serviceable and they are not designed to be upgraded. The other choices are true of mobile devices."},{"d":1,"q":"Which is not a wired connection for a smart phone?","o":["Lightning","Ethernet","Micro USB","USB C"],"c":1,"e":"Smart phones do not come with Ethernet connectors. Smart phones commonly have Lightning, micro USB, or USB Type-C connectors."},{"d":1,"q":"Where can users get Android apps?","o":["Play Store","App Store","Microsoft Store","Steam store"],"c":0,"e":"Google Play is the primary source for Android apps. The Apple App Store provides access to iOS apps. Neither the Microsoft Store nor Steam distribute Android apps."},{"d":1,"q":"Which is not a mobile device maintenance practice?","o":["Update the PRL","Update the firmware","Back up the data and apps","Update the APK files"],"c":3,"e":"Android Package (APK) files contain installable applications; installing applications isn't part of the normal mobile-device maintenance process. PRL updates, firmware updates, and backups are all mobile device maintenance techniques."},{"d":1,"q":"Which port number is not used by an encrypted e-mail protocol?","o":["143","993","587","995"],"c":0,"e":"143 is the unencrypted IMAP port. 993 is the encrypted IMAP port. 587 is one of the encrypted SMTP port numbers. 995 is the encrypted POP3 port."},{"d":1,"q":"Synchronization is least concerned with which choice?","o":["Contacts","Calendar","Backups","Files"],"c":2,"e":"Backups are only in sync at the instant of backup - after that, the original source may undergo changes until the next backup session. Synchronization is concerned with keeping current, identical copies of contacts, calendar events and files across multiple devices."},{"d":1,"q":"Which is not a typical Android screen lock option?","o":["Swipe","Token","Pattern","PIN"],"c":1,"e":"Tokens are not used to unlock Android screens. Swipes, patterns and pins are commonly used to unlock screens."},{"d":1,"q":"Which is least likely solution for a dim mobile device screen?","o":["Charge the battery","Adjust the display's brightness","Enable automatic brightness adjustments","Replace the display or its backlight"],"c":0,"e":"A dead or low battery that is low enough to cause a dim display will likely prevent the device from functioning at all. Adjusting brightness, enabling automatic brightness adjustments, or replacing a bad display/backlight may all fix a dim screen."},{"d":3,"q":"What material do laser printers use to create the final printed image?","o":["Heated thermal plastic","Heat","Ink","Toner"],"c":3,"e":"Laser printers create the final printed image by fusing toner to the page. The other choices are incorrect."},{"d":3,"q":"Which letters represent the ink colors normally used in color inkjet printers?","o":["RGB, Bk, Wh","RGBKW","RGB","CMYK"],"c":3,"e":"Inkjet printers typically use cyan, magenta, yellow and black (CMYK) ink. Red, green, and blue (RGB) are the colors of light used by monitors. White ink is seldom used in inkjet printers."},{"d":3,"q":"Which is not part of the impact-printing process?","o":["Pins pop out of the printhead","Pre-heat the printhead","Pins strike an inked ribbon","Inked ribbon makes contact with paper"],"c":1,"e":"The printhead of a dot matrix (impact) printer does not require heating. All of the other options are part of the process of impact printing with a dot matrix printer."},{"d":3,"q":"Which is not a maintenance task for thermal printers?","o":["Replace the paper","Clean the printhead","Replace the fuser","Blow out any debris"],"c":2,"e":"Thermal printers do not have fusers. Replace paper as needed. Clean the printheads and blow out debris regularly."},{"d":3,"q":"Connecting a local printer to a computer is usually done with what kind of connection?","o":["USB","Serial","Ethernet","Infrared"],"c":0,"e":"Most printers have a USB port for connecting to a computer. Some niche industry printers use serial ports. Many printers have an Ethernet port, but they are normally used as network printers, not directly attached to a local computer. Infrared interfaces are not found on printers."},{"d":3,"q":"Which is not true of shared printers?","o":["To access a shared printer, create a local printer and then convert it to shared","To create a shared printer, enable file and printer sharing","To create a shared printer, give it a share name","To access a shared printer, add a printer and then select the shared printer"],"c":0,"e":"A shared printer cannot be accessed by creating a local printer. The other statements about shared printers are true."},{"d":3,"q":"Which is not part of the 3D-printing process?","o":["Create the 3D image","Create the slice file","Print a 2D test","Preheat the extruder and bed"],"c":2,"e":"Printing a 2D test is not part of the 3D-printing process. All of the other choices are part of the 3D-printing process."}];</script>
+<script>
+/* ============ STATE & STORAGE ============ */
+const COLORVAR = {1:'--d1',2:'--d2',3:'--d3',4:'--d4',5:'--d5'};
+const store = {
+  read(){ try{ return JSON.parse(localStorage.getItem('bench_progress')||'{}'); }catch(e){ return {}; } },
+  write(o){ try{ localStorage.setItem('bench_progress', JSON.stringify(o)); }catch(e){} },
+};
+let progress = store.read();
+// progress shape: { lessons:{1:[idx...]}, best:{1:{score,total}}, wrong:[questionIdx...] }
+progress.lessons = progress.lessons||{};
+progress.best = progress.best||{};
+progress.wrong = progress.wrong||[];
+
+function saveLesson(d, idx){
+  progress.lessons[d] = progress.lessons[d]||[];
+  if(!progress.lessons[d].includes(idx)) progress.lessons[d].push(idx);
+  store.write(progress);
+}
+function lessonsDone(d){ return (progress.lessons[d]||[]).length; }
+
+/* ============ THEME ============ */
+function initTheme(){
+  let t='dark'; try{ t=localStorage.getItem('bench_theme')||'dark'; }catch(e){}
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').firstChild.textContent = t==='dark'?'🌙 ':'☀️ ';
+}
+document.getElementById('themeBtn').onclick=()=>{
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  document.getElementById('themeBtn').firstChild.textContent = next==='dark'?'🌙 ':'☀️ ';
+  try{ localStorage.setItem('bench_theme',next); }catch(e){}
+};
+document.getElementById('resetBtn').onclick=()=>{
+  if(confirm('Reset all lesson and quiz progress on this device?')){
+    progress={lessons:{},best:{},wrong:[]}; store.write(progress); go('home');
+  }
+};
+
+/* ============ ROUTER ============ */
+const app=document.getElementById('app');
+let quiz=null; // active quiz state
+function go(view,arg){ window.scrollTo(0,0); ({home:viewHome,lesson:viewLesson,setup:viewSetup,quiz:viewQuiz,results:viewResults}[view])(arg); }
+function el(html){ app.innerHTML='<div class="view">'+html+'</div>'; }
+function esc(s){ return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function qByDomain(d){ return QUESTIONS.map((q,i)=>({q,i})).filter(o=>o.q.d===d); }
+
+/* ============ HOME ============ */
+function viewHome(){
+  const totalLessons = DOMAINS.reduce((a,d)=>a+LESSONS[d.n].length,0);
+  const doneLessons = DOMAINS.reduce((a,d)=>a+lessonsDone(d.n),0);
+  const bestVals = Object.values(progress.best);
+  const avg = bestVals.length ? Math.round(bestVals.reduce((a,b)=>a+b.score/b.total,0)/bestVals.length*100) : 0;
+  let cards = DOMAINS.map(d=>{
+    const cv=COLORVAR[d.n], lc=LESSONS[d.n].length, ld=lessonsDone(d.n), qn=qByDomain(d.n).length;
+    const dots = Array.from({length:lc},(_,i)=>`<span class="led-dot ${i<ld?'on':''}"></span>`).join('');
+    const best = progress.best[d.n];
+    const bestTxt = best ? `best ${Math.round(best.score/best.total*100)}%` : 'not attempted';
+    return `<div class="card" style="--dc:var(${cv})" onclick="go('lesson',${d.n})">
+      <div class="bar"></div>
+      <div class="top"><span class="dnum">${d.n}.0</span><span class="pct">${d.pct}% of exam</span></div>
+      <h4>${d.title}</h4>
+      <p class="desc">${d.blurb}</p>
+      <div class="led-strip">${dots}</div>
+      <div class="meta"><span>${ld}/${lc} lessons read</span><span>${qn} questions · ${bestTxt}</span></div>
+    </div>`;
+  }).join('');
+  el(`
+    <div class="hero">
+      <span class="eyebrow">Diagnostic study bench</span>
+      <h2>Pass Core 1.<br>One domain at a time.</h2>
+      <p>Five domains, plain-language lessons, and ${QUESTIONS.length} practice questions with full explanations. Read a domain, then run a quiz to find the gaps.</p>
+      <div class="stat-strip">
+        <div class="stat"><span class="num">${doneLessons}/${totalLessons}</span><span class="lbl">Lessons read</span></div>
+        <div class="stat"><span class="num">${QUESTIONS.length}</span><span class="lbl">Practice Qs</span></div>
+        <div class="stat"><span class="num ${avg>=75?'led':''}">${avg}%</span><span class="lbl">Avg best score</span></div>
+        <div class="stat"><span class="num">675</span><span class="lbl">Pass score /900</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="btn primary" onclick="go('setup','mix')">Start a mixed quiz</button>
+      ${progress.wrong.length?`<button class="btn" onclick="startWrong()">Review ${progress.wrong.length} missed</button>`:''}
+    </div>
+    <div class="section-h"><h3>Domains</h3><div class="line"></div></div>
+    <div class="grid">${cards}</div>
+  `);
+}
+
+/* ============ LESSON ============ */
+function viewLesson(d){
+  d=+d; const dom=DOMAINS.find(x=>x.n===d), cv=COLORVAR[d], list=LESSONS[d];
+  const toc = list.map((l,i)=>`<button onclick="document.getElementById('ls${i}').scrollIntoView({behavior:'smooth'})">${esc(l.t)}</button>`).join('');
+  const cards = list.map((l,i)=>`
+    <section class="lesson-card" id="ls${i}" style="--dc:var(${cv})">
+      <h3>${esc(l.t)}</h3>
+      ${l.h}
+    </section>`).join('');
+  el(`
+    <button class="back" onclick="go('home')">← All domains</button>
+    <div class="lesson-head" style="--dc:var(${cv})">
+      <span class="dnum">${d}.0</span>
+      <h2>${dom.title}</h2>
+    </div>
+    <p style="color:var(--muted);margin:0 0 4px">${dom.blurb}</p>
+    <div class="toc">${toc}</div>
+    ${cards}
+    <div class="lesson-foot">
+      <button class="btn" onclick="markRead(${d})" id="readBtn">Mark all read ✓</button>
+      <button class="btn dc" style="--dc:var(${cv})" onclick="go('setup',${d})">Quiz this domain →</button>
+    </div>
+  `);
+}
+function markRead(d){
+  LESSONS[d].forEach((_,i)=>saveLesson(d,i));
+  const b=document.getElementById('readBtn'); b.textContent='Saved ✓'; b.classList.add('primary');
+}
+
+/* ============ QUIZ SETUP ============ */
+let setupDomain='mix', setupLen=10;
+function viewSetup(arg){
+  setupDomain = arg==null?'mix':arg;
+  const domOpts = [`<button class="opt ${setupDomain==='mix'?'sel':''}" onclick="pickDom('mix')">
+      <span class="ot">Mixed</span><span class="os">all ${QUESTIONS.length} questions</span></button>`]
+    .concat(DOMAINS.map(d=>`<button class="opt ${setupDomain==d.n?'sel':''}" onclick="pickDom(${d.n})" style="--dc:var(${COLORVAR[d.n]})">
+      <span class="ot">${d.n}.0 ${d.title.split(' ')[0]}</span><span class="os">${qByDomain(d.n).length} questions</span></button>`)).join('');
+  const pool = setupDomain==='mix'?QUESTIONS.length:qByDomain(+setupDomain).length;
+  const lens=[5,10,20].filter(n=>n<=pool); if(!lens.includes(pool)) lens.push(pool>20?pool:pool);
+  const lenSet=[...new Set(lens)];
+  if(setupLen>pool) setupLen=pool;
+  const lenChips=lenSet.map(n=>`<button class="chip ${setupLen===n?'sel':''}" onclick="pickLen(${n})">${n===pool?('All '+n):n} Qs</button>`).join('');
+  el(`
+    <button class="back" onclick="go('home')">← Home</button>
+    <span class="eyebrow">Configure quiz</span>
+    <h2 style="font-family:var(--display);font-size:28px;margin:8px 0 4px;letter-spacing:-.02em">Build your quiz</h2>
+    <p style="color:var(--muted);margin:0 0 8px">Questions are drawn at random and shuffled. You'll see an explanation after every answer.</p>
+    <div class="section-h"><h3>Topic</h3><div class="line"></div></div>
+    <div class="setup-grid">${domOpts}</div>
+    <div class="section-h"><h3>Length</h3><div class="line"></div></div>
+    <div class="lenrow">${lenChips}</div>
+    <div style="margin-top:30px"><button class="btn primary" onclick="startQuiz()">Begin →</button></div>
+  `);
+}
+function pickDom(d){ setupDomain=d; viewSetup(d); }
+function pickLen(n){ setupLen=n; viewSetup(setupDomain); }
+
+/* ============ QUIZ ENGINE ============ */
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
+function startQuiz(){
+  let pool = setupDomain==='mix' ? QUESTIONS.map((q,i)=>i) : qByDomain(+setupDomain).map(o=>o.i);
+  pool = shuffle(pool).slice(0, setupLen);
+  quiz={ domain:setupDomain, ids:pool, cur:0, score:0, answered:false, missed:[] };
+  go('quiz');
+}
+function startWrong(){
+  const pool=shuffle(progress.wrong.slice());
+  if(!pool.length) return;
+  quiz={ domain:'wrong', ids:pool, cur:0, score:0, answered:false, missed:[] };
+  go('quiz');
+}
+function viewQuiz(){
+  const id=quiz.ids[quiz.cur], q=QUESTIONS[id];
+  const cv=COLORVAR[q.d], dom=DOMAINS.find(x=>x.n===q.d);
+  const keys=['A','B','C','D'];
+  const opts=q.o.map((o,i)=>`<button class="ans" data-i="${i}" onclick="answer(${i})" style="--dc:var(${cv})">
+    <span class="key">${keys[i]}</span><span>${esc(o)}</span></button>`).join('');
+  const pctW=(quiz.cur/quiz.ids.length*100);
+  el(`
+    <div class="qbar">
+      <div class="progress"><i style="width:${pctW}%"></i></div>
+      <span class="qcount">Q ${quiz.cur+1}/${quiz.ids.length}</span>
+      <span class="qscore"><b>${quiz.score}</b> correct</span>
+    </div>
+    <span class="qtag" style="--dc:var(${cv})">${q.d}.0 ${esc(dom.title.split(' ')[0])}</span>
+    <h2 class="question">${esc(q.q)}</h2>
+    <div class="answers" id="answers">${opts}</div>
+    <div id="exwrap"></div>
+    <div class="qfoot" id="qfoot"></div>
+  `);
+  quiz.answered=false;
+}
+function answer(i){
+  if(quiz.answered) return; quiz.answered=true;
+  const id=quiz.ids[quiz.cur], q=QUESTIONS[id], cv=COLORVAR[q.d];
+  const btns=[...document.querySelectorAll('.ans')];
+  btns.forEach(b=>b.disabled=true);
+  const correct=q.c;
+  if(i===correct){ quiz.score++; btns[i].classList.add('correct');
+    // remove from wrong list if reviewing/known
+    progress.wrong=progress.wrong.filter(x=>x!==id);
+  } else {
+    btns[i].classList.add('wrong'); btns[correct].classList.add('correct');
+    quiz.missed.push(id);
+    if(!progress.wrong.includes(id)) progress.wrong.push(id);
+  }
+  store.write(progress);
+  document.getElementById('exwrap').innerHTML=`
+    <div class="explain" style="--dc:var(${cv})">
+      <div class="et">${i===correct?'Correct':'Explanation'}</div>${esc(q.e)}
+    </div>`;
+  const last = quiz.cur===quiz.ids.length-1;
+  document.getElementById('qfoot').innerHTML=
+    `<button class="btn primary" onclick="next()">${last?'See results →':'Next question →'}</button>`;
+}
+function next(){
+  if(quiz.cur===quiz.ids.length-1){ finishQuiz(); }
+  else { quiz.cur++; go('quiz'); }
+}
+function finishQuiz(){
+  // record best per domain (only for single-domain runs)
+  if(quiz.domain!=='mix' && quiz.domain!=='wrong'){
+    const d=+quiz.domain, prev=progress.best[d];
+    const ratio=quiz.score/quiz.ids.length;
+    if(!prev || ratio > prev.score/prev.total) progress.best[d]={score:quiz.score,total:quiz.ids.length};
+    store.write(progress);
+  }
+  go('results');
+}
+
+/* ============ RESULTS ============ */
+function viewResults(){
+  const total=quiz.ids.length, score=quiz.score, pct=Math.round(score/total*100);
+  const pass=pct>=75;
+  // ring
+  const R=70,C=2*Math.PI*R, off=C*(1-score/total);
+  const ringColor=pass?'var(--led)':'var(--wrong)';
+  // breakdown by domain
+  const counts={};
+  quiz.ids.forEach(id=>{const d=QUESTIONS[id].d;counts[d]=counts[d]||{t:0,c:0};counts[d].t++;});
+  quiz.ids.forEach(id=>{ if(!quiz.missed.includes(id)){const d=QUESTIONS[id].d;counts[d].c++;} });
+  const rows=Object.keys(counts).sort().map(d=>{
+    const dom=DOMAINS.find(x=>x.n==d),cv=COLORVAR[d],o=counts[d];
+    return `<div class="brow" style="--dc:var(${cv})"><span class="bd"></span><span class="bn">${d}.0</span>
+      <span class="btitle">${dom.title}</span><span class="bsc">${o.c}/${o.t}</span></div>`;
+  }).join('');
+  const msg = pct>=90?'Bench-ready. Excellent.':pct>=75?'Passing range — keep sharpening.':pct>=50?'Getting there. Re-read the weak domains.':'Early days. Work the lessons, then retry.';
+  el(`
+    <div class="result-hero">
+      <svg class="ring" viewBox="0 0 160 160">
+        <circle cx="80" cy="80" r="${R}" fill="none" stroke="var(--border)" stroke-width="12"/>
+        <circle cx="80" cy="80" r="${R}" fill="none" stroke="${ringColor}" stroke-width="12" stroke-linecap="round"
+          stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 80 80)"
+          style="transition:stroke-dashoffset 1s ease"/>
+        <text x="80" y="74" text-anchor="middle" font-family="Space Grotesk" font-size="34" font-weight="700" fill="var(--text)">${pct}%</text>
+        <text x="80" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="var(--muted)">${score} / ${total}</text>
+      </svg>
+      <h2>${score} of ${total} correct</h2>
+      <p>${msg}</p>
+      <div class="verdict ${pass?'pass':'fail'}">${pass?'▲ PASSING RANGE':'▼ BELOW 75%'}</div>
+    </div>
+    <div class="result-actions">
+      <button class="btn primary" onclick="go('setup','${quiz.domain==='wrong'?'mix':quiz.domain}')">New quiz</button>
+      ${quiz.missed.length?`<button class="btn" onclick="retryMissed()">Retry ${quiz.missed.length} missed</button>`:''}
+      <button class="btn" onclick="go('home')">Home</button>
+    </div>
+    ${rows?`<div class="section-h"><h3>By domain</h3><div class="line"></div></div><div class="breakdown">${rows}</div>`:''}
+  `);
+}
+function retryMissed(){
+  const pool=shuffle(quiz.missed.slice());
+  quiz={ domain:quiz.domain, ids:pool, cur:0, score:0, answered:false, missed:[] };
+  go('quiz');
+}
+
+/* ============ BOOT ============ */
+initTheme();
+go('home');
+</script>
+</body>
+</html>
