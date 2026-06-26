@@ -285,7 +285,9 @@ const LESSONS = {
  {t:"Wireless technologies", h:`
   <p><b>Frequency bands:</b> <span class="kw">2.4&nbsp;GHz</span> travels farther and through walls but is slower and crowded; <span class="kw">5&nbsp;GHz</span> is faster with less range; <span class="kw">6&nbsp;GHz</span> (Wi-Fi 6E) adds clean spectrum and more channels.</p>
   <p><b>Channels:</b> selection and width matter to avoid overlap and interference; regulations differ by country. On 2.4&nbsp;GHz, channels 1, 6, and 11 are the classic non-overlapping picks.</p>
-  <p>Know the short-range tech: <b>Bluetooth</b> (peripherals), <b>NFC</b> (tap, ~4&nbsp;cm), and <b>RFID</b> (tags read by a reader — badges, inventory). The <b>802.11</b> family (a/b/g/n/ac/ax) defines Wi-Fi speeds and bands.</p>`},
+  <p>Know the short-range tech: <b>Bluetooth</b> (peripherals), <b>NFC</b> (tap, ~4&nbsp;cm), and <b>RFID</b> (tags read by a reader — badges, inventory). The <b>802.11</b> family (a/b/g/n/ac/ax) defines Wi-Fi speeds and bands.</p>
+  <p><b>Wireless security:</b> the <span class="kw">SSID</span> is the network's name (hide it to reduce casual discovery, not as real security). Encryption: <span class="kw">WPA3</span> is the current standard, <span class="kw">WPA2</span> (AES) is still common and acceptable; avoid WEP and the old TKIP. A <span class="kw">guest network</span> isolates visitors from your internal LAN. On exam scenarios, "weak/old encryption" almost always means switch to WPA2/WPA3.</p>`},
+
  {t:"Networked host services", h:`
   <p>Server roles you should be able to name on sight: <span class="kw">DNS</span> (names→IPs), <span class="kw">DHCP</span> (hands out IPs), <span class="kw">fileshare</span>, <span class="kw">print servers</span>, <span class="kw">mail servers</span>, <span class="kw">syslog</span> (central logs), <span class="kw">web servers</span>, <span class="kw">AAA</span> (authentication/authorization/accounting), <span class="kw">database servers</span>, and <span class="kw">NTP</span> (time sync).</p>
   <p><b>Internet appliances:</b> spam gateways, UTM (all-in-one security), load balancers, and proxy servers. <b>Legacy/embedded:</b> SCADA for industrial control. And the broad world of <b>IoT</b> smart devices.</p>`},
@@ -295,7 +297,7 @@ const LESSONS = {
   <p><b>VLAN</b> logically segments one physical switch into separate networks. <b>VPN</b> creates an encrypted tunnel across a public network.</p>`},
  {t:"Networking hardware", h:`
   <p><b>Router</b> connects networks and routes between them; <b>switch</b> connects devices within a network (managed = configurable VLANs/QoS, unmanaged = plug-and-play). <b>Access point</b> provides Wi-Fi. <b>Patch panel</b> terminates cable runs. <b>Firewall</b> filters traffic.</p>
-  <p><b>PoE</b> (Power over Ethernet) carries power and data on one cable — useful for APs and cameras; delivered by a PoE switch or an inline injector. <b>Modems</b> bridge to your ISP: cable modem, DSL, or an <span class="kw">ONT</span> for fiber. Every <b>NIC</b> has a burned-in <span class="kw">MAC address</span>.</p>`},
+  <p><b>PoE</b> (Power over Ethernet) carries power and data on one cable — useful for APs and cameras; delivered by a PoE switch or an inline injector. <b>Modems</b> bridge to your ISP: cable modem, DSL, or an <span class="kw">ONT</span> for fiber. A <span class="kw">NAS</span> (network-attached storage) is a dedicated file-share box on the LAN. Every <b>NIC</b> has a burned-in <span class="kw">MAC address</span>.</p>`},
  {t:"SOHO networks & addressing", h:`
   <p><b>IPv4</b> private ranges (not routable on the internet): <span class="mono">10.0.0.0/8</span>, <span class="mono">172.16.0.0/12</span>, <span class="mono">192.168.0.0/16</span>. Everything else public is. <b>IPv6</b> uses 128-bit addresses. <b>APIPA</b> (<span class="mono">169.254.x.x</span>) is the self-assigned address a device falls back to when DHCP fails — a giant clue that the DHCP server is unreachable.</p>
   <p>Addresses can be <b>static</b> (manually set) or <b>dynamic</b> (from DHCP). A host needs an IP, a <span class="kw">subnet mask</span> (defines the network portion), and a <span class="kw">gateway</span> (the router's address) to reach other networks.</p>`},
@@ -318,7 +320,8 @@ const LESSONS = {
    <tr><td class="mono">HDMI / DP / DVI / VGA</td><td>video (VGA is analog/legacy)</td></tr>
    <tr><td class="mono">SATA / eSATA</td><td>internal / external drives</td></tr>
    <tr><td class="mono">Molex</td><td>legacy power</td></tr>
-  </table>`},
+  </table>
+  <p><b>Peripheral cables &amp; speeds:</b> <span class="kw">USB 2.0</span> ~480&nbsp;Mbps, <span class="kw">USB 3.0</span> (SuperSpeed, blue port) ~5&nbsp;Gbps, <span class="kw">USB-C</span> is the reversible connector (can carry USB, power, and DisplayPort video). <span class="kw">Thunderbolt</span> (uses the USB-C connector on TB3/4) adds very high bandwidth and daisy-chaining. <span class="kw">Serial / DB9</span> is legacy RS-232 — still seen on console cables for switches and routers.</p>`},
  {t:"RAM characteristics", h:`
   <p><b>Form factor:</b> <span class="kw">DIMM</span> for desktops, <span class="kw">SODIMM</span> for laptops/small PCs. <b>DDR generations</b> (DDR3/DDR4/DDR5) are not backward-compatible — the notch and slot differ.</p>
   <p><b>ECC</b> (error-correcting) RAM detects and fixes single-bit errors; used in servers, not most desktops. <b>Channel configurations</b> (single/dual/quad) increase bandwidth when sticks are installed in matched pairs in the correct slots.</p>`},
@@ -336,15 +339,16 @@ const LESSONS = {
   <p><b>Setup:</b> unbox and place sensibly, install the right driver (<span class="kw">PCL</span> vs. <span class="kw">PostScript</span>), update firmware, and connect via USB, Ethernet, or wireless. Share via a printer share or a print server. Configure duplex, orientation, trays, and quality. Security: user authentication, badging, audit logs, secured prints.</p>
   <p><b>Maintenance by type:</b></p>
   <ul>
-   <li><b>Laser:</b> replace toner, apply maintenance kit, calibrate, clean. (Process: charge → expose → develop → transfer → fuse → clean.)</li>
+   <li><b>Laser:</b> replace toner, apply maintenance kit, calibrate, clean. <b>Parts to know:</b> toner cartridge, imaging <span class="kw">drum</span>, <span class="kw">fuser</span> (heat-presses toner onto the page), transfer roller, pickup roller, separation pad.<br><b>Imaging process, in order:</b> processing → charging → exposing → developing → transferring → fusing → cleaning.</li>
    <li><b>Inkjet:</b> clean printheads, replace cartridges, calibrate, clear jams.</li>
    <li><b>Thermal:</b> replace special heat-sensitive paper, clean the heating element, remove debris.</li>
    <li><b>Impact:</b> replace ribbon, printhead, and paper; uses multipart (carbon-copy) forms.</li>
-  </ul>`},
+  </ul>
+  <p class="kw" style="font-weight:600">Quick tells: faded = low toner · ghosting/echo = drum or fuser · smearing = fuser · repeating spots/streaks = drum · garbled = wrong driver.</p>`},
 ],
 4:[
  {t:"Virtualization concepts", h:`
-  <p><b>Why virtualize:</b> a <span class="kw">sandbox</span> to safely test, <span class="kw">test/dev</span> environments, and <span class="kw">application virtualization</span> to run legacy or cross-platform software. VMs need allotted security, network, and storage resources.</p>
+  <p><b>Why virtualize:</b> a <span class="kw">sandbox</span> to safely test, <span class="kw">test/dev</span> environments, and <span class="kw">application virtualization</span> to run legacy or cross-platform software. A VM is given virtual hardware — <span class="kw">vCPU</span>, virtual RAM, a virtual disk, and virtual networking — carved from the host. A <span class="kw">snapshot</span> saves a VM's exact state so you can roll back after a bad change. VMs need allotted security, network, and storage resources.</p>
   <p><b>Hypervisor types:</b> <span class="kw">Type 1</span> runs directly on the hardware (bare-metal — fast, for servers); <span class="kw">Type 2</span> runs as an app on top of a host OS (e.g. VirtualBox on your laptop). <b>Containers</b> share the host OS kernel — lighter than full VMs. <b>VDI</b> delivers virtual desktops to users from a central server.</p>`},
  {t:"Cloud computing concepts", h:`
   <p><b>Deployment models:</b> <span class="kw">private</span> (one org), <span class="kw">public</span> (shared provider), <span class="kw">hybrid</span> (mix), <span class="kw">community</span> (shared by similar orgs).</p>
@@ -352,6 +356,17 @@ const LESSONS = {
   <p><b>Characteristics:</b> shared vs. dedicated resources, metered/pay-as-you-go billing (watch <span class="kw">ingress/egress</span> data fees), <span class="kw">elasticity</span> (scale up/down on demand), high availability, file synchronization, and multitenancy (many customers on shared infrastructure).</p>`},
 ],
 5:[
+ {t:"First-step logic & quick tells", h:`
+  <p>CompTIA loves "what's the <b>first</b> step / <b>most likely</b> cause" questions. Start with the simplest, cheapest, least-invasive check before swapping parts. Memorize these reflexes:</p>
+  <ul>
+   <li><b>No power at all</b> → check the obvious first: wall outlet, power cable, PSU switch (and voltage), then the front-panel power button connector.</li>
+   <li><b>No network</b> → check physical link/cable and link light first, then IP config.</li>
+   <li><b><span class="mono">169.254.x.x</span> address</b> → DHCP failure (device couldn't get an address).</li>
+   <li><b>Can ping an IP but not a name</b> → DNS problem.</li>
+   <li><b>No link light</b> → cable, port, NIC, or switch.</li>
+   <li><b>Weak Wi-Fi</b> → distance, interference, wrong band, bad channel, or an overloaded AP.</li>
+   <li><b>Beyond your skill or authority</b> → escalate; don't guess on production systems.</li>
+  </ul>`},
  {t:"Troubleshooting methodology", h:`
   <p>Not directly tested, but it frames every scenario question. The steps in order:</p>
   <ol>
